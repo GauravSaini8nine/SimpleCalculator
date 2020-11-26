@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.simplecalculatorapp
 
 import androidx.appcompat.app.AppCompatActivity
@@ -5,27 +7,30 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 
-import java.lang.NumberFormatException
+import androidx.lifecycle.ViewModelProviders.*
+
+
 import kotlinx.android.synthetic.main.activity_main.*
 
-private const val STATE_PENDING_OPERATION="PendingOperation"
-private const val STATE_OPERAND1="Operand1"
-private const val STATE_OPERAND1_STORED="Operand1_Stored"
+//private const val STATE_PENDING_OPERATION="PendingOperation"
+//private const val STATE_OPERAND1="Operand1"
+//private const val STATE_OPERAND1_STORED="Operand1_Stored"
 class MainActivity : AppCompatActivity() {
 //    private lateinit var result: EditText
 //    private lateinit var startCalculating: EditText
 //    private val displayOperation by lazy(LazyThreadSafetyMode.NONE) { findViewById<TextView>(R.id.Operation) }
 
 
-    //variable to hold the operands and type of calculations
-    private var operand1: Double? = null
 
-    private var pendingOperation = "="
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val viewModel= of(this).get(CalculatorViewModel::class.java)
+        viewModel.result.observe(this, { stringResult-> result.setText(stringResult)})
+        viewModel.newNumber.observe(this, { sringNumber-> NewNumber.setText(sringNumber)})
+        viewModel.operation.observe(this, { sringOperation-> NewNumber.setText(sringOperation)})
 //        result = findViewById(R.id.etResult)
 //        startCalculating = findViewById(R.id.etStartCalculation)
 
@@ -50,8 +55,7 @@ class MainActivity : AppCompatActivity() {
 //        val equals = findViewById<Button>(R.id.btnEquals)
 
         val listener = View.OnClickListener { v ->
-            val b = v as Button
-            etStartCalculation.append(b.text)
+            viewModel.digitPressed((v as Button).text.toString())
 
         }
         btn1.setOnClickListener(listener)
@@ -68,18 +72,8 @@ class MainActivity : AppCompatActivity() {
 
 
         val opListener = View.OnClickListener { v ->
-            val op = (v as Button).text.toString()
-            try {
-                val value = etStartCalculation.text.toString().toDouble()
+            viewModel.operandPressed((v as Button).text.toString())
 
-                performOperation(value, op)
-
-            } catch (e: NumberFormatException) {
-                etStartCalculation.setText("")
-            }
-
-            pendingOperation = op
-            Operation.setText(pendingOperation)
         }
 
         btnEquals.setOnClickListener(opListener)
@@ -90,51 +84,27 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun performOperation(value: Double, Operation: String) {
-        if (operand1 == null) {
-            operand1 = value
-        } else {
-            if (pendingOperation == "=") {
-                pendingOperation = Operation
-            }
-            when (pendingOperation) {
-                "=" -> operand1 = value
-                "/" -> operand1 = if (value == 0.0) {
-                    Double.NaN  // handling exception of dividing by 0
-                } else {
-                    operand1!! / value
-                }
-                "*" -> operand1 = operand1!! * value
-                "+" -> operand1 = operand1!! + value
-                "-" -> operand1 = operand1!! - value
-
-            }
-        }
-        etResult.setText(operand1.toString())
-        etStartCalculation.setText("")
 
 
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        if(operand1 != null){
-            outState.putDouble(STATE_OPERAND1, operand1!!)
-            outState.putBoolean(STATE_OPERAND1_STORED,true)
-        }
-        outState.putString(STATE_PENDING_OPERATION, pendingOperation!!)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        if (savedInstanceState.getBoolean(STATE_OPERAND1)){
-            operand1= savedInstanceState.getDouble(STATE_OPERAND1)
-        }else{
-            operand1=null
-        }
-
-        pendingOperation= savedInstanceState.getString(STATE_PENDING_OPERATION).toString()
-        Operation.text=pendingOperation
-
-    }
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        super.onSaveInstanceState(outState)
+//        if(operand1 != null){
+//            outState.putDouble(STATE_OPERAND1, operand1!!)
+//            outState.putBoolean(STATE_OPERAND1_STORED,true)
+//        }
+//        outState.putString(STATE_PENDING_OPERATION, pendingOperation!!)
+//    }
+//
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//        if (savedInstanceState.getBoolean(STATE_OPERAND1)){
+//            operand1= savedInstanceState.getDouble(STATE_OPERAND1)
+//        }else{
+//            operand1=null
+//        }
+//
+//        pendingOperation= savedInstanceState.getString(STATE_PENDING_OPERATION).toString()
+//        Operation.text=pendingOperation
+//
+//    }
 }

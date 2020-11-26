@@ -8,44 +8,45 @@
     tools:context=".MainActivity">
 
     <EditText
-        android:id="@+id/etResult"
+        android:id="@+id/result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="132dp"
+        android:layout_marginTop="248dp"
         android:ems="10"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:hint="Result"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.191"
+        app:layout_constraintHorizontal_bias="0.176"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/Operation"
+        android:id="@+id/operation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
         android:text="TextView"
-        app:layout_constraintBaseline_toBaselineOf="@+id/etStartCalculation"
-        app:layout_constraintEnd_toStartOf="@+id/etStartCalculation" />
+        app:layout_constraintEnd_toStartOf="@+id/etStartCalculation"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etStartCalculation"
+        android:id="@+id/NewNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="132dp"
         android:ems="10"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:hint="Start Calculating"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.191"
+        app:layout_constraintHorizontal_bias="0.19"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etResult" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnEquals"
@@ -63,12 +64,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:layout_marginLeft="44dp"
+        android:layout_marginEnd="300dp"
+        android:layout_marginRight="300dp"
         android:text="7"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/etResult"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/result"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.184"
+        app:layout_constraintVertical_bias="0.181"
         tools:visibility="visible" />
 
     <Button
